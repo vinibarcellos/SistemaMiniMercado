@@ -23,9 +23,10 @@ public class ProdutoService implements IProdutoService {
     }
 
     @Override
-    public Produto buscarProdutoPorId(String id) {
+    public Produto buscarProdutoPorId(int id) {
         for (Produto p : this.repositorioDeProdutos) {
-            if (p.getId().equals(id)) {
+
+            if (p.getId() == id) {
                 return p;
             }
         }
@@ -38,34 +39,31 @@ public class ProdutoService implements IProdutoService {
     }
 
     @Override
-    public void adicionarEstoque(String id, int quantidade) {
+    public void adicionarEstoque(int id, int quantidade) {
         Produto produto = buscarProdutoPorId(id);
-
 
         if (produto != null) {
             produto.adicionarEstoque(quantidade);
             System.out.println("Estoque atualizado: " + produto.getNome() + " | Qtd: " + produto.getQuantidadeEmEstoque());
         } else {
-
             System.out.println("Erro: Produto com ID " + id + " não encontrado para adicionar estoque.");
         }
     }
 
     @Override
-    public boolean darBaixaEstoque(String id, int quantidade) {
+    public boolean darBaixaEstoque(int id, int quantidade) {
         Produto produto = buscarProdutoPorId(id);
         if (produto != null) {
             boolean sucesso = produto.removerEstoque(quantidade);
 
             if (sucesso) {
                 System.out.println("Baixa no estoque: " + produto.getNome() + " | Restante: " + produto.getQuantidadeEmEstoque());
-                return true; // Deu certo.
+                return true;
             } else {
                 System.out.println("Erro: Estoque insuficiente para " + produto.getNome());
-                return false; // Falhou (sem estoque).
+                return false;
             }
         } else {
-            // se for 'null', o produto não foi encontrado
             System.out.println("Erro: Produto com ID " + id + " não encontrado para dar baixa.");
             return false;
         }

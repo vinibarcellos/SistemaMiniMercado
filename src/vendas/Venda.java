@@ -1,22 +1,26 @@
 package vendas;
 
 import vendas.clientes.Cliente;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Venda {
+
+    private static int contadorId = 0;
+
     private final int id;
     private final LocalDateTime dataHora;
     private Cliente cliente;
     private final ArrayList<ItensVenda> itens;
     private double desconto;
 
-    public Venda(int id, LocalDateTime dataHora, ArrayList<ItensVenda> itens, Cliente cliente, double desconto) {
-        this.id = id;
+    public Venda(Cliente cliente) {
+        this.id = ++contadorId;
+        this.cliente = cliente;
+
+
         this.dataHora = LocalDateTime.now();
         this.itens = new ArrayList<>();
-        this.cliente = cliente;
         this.desconto = 0.0;
     }
 
@@ -24,13 +28,16 @@ public class Venda {
         this.itens.add(item);
     }
 
-    // valorTotal
-    public double getValorTotal() {
+    public double getSubTotal() {
         double subtotal = 0.0;
         for (ItensVenda item : itens) {
             subtotal += item.getSubTotal();
         }
-        return subtotal - this.desconto;
+        return subtotal;
+    }
+
+    public double getValorTotal() {
+        return getSubTotal() - this.desconto;
     }
 
     public int getId() {

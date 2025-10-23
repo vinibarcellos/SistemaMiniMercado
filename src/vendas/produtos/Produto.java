@@ -1,12 +1,12 @@
 package vendas.produtos;
 
 public class Produto {
-    private String id;
+    private final int id;
     private String nome;
     private double precoUnitario;
     private int quantidadeEmEstoque;
 
-    public Produto(String id, String nome, double precoUnitario, int quantidadeEmEstoque) {
+    public Produto(int id, String nome, double precoUnitario, int quantidadeEmEstoque) {
         this.id = id;
         this.nome = nome;
         this.precoUnitario = precoUnitario;
@@ -22,27 +22,24 @@ public class Produto {
         this.nome = nome;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public double getPrecoUnitario() {
         return precoUnitario;
     }
 
     public void setPrecoUnitario(double precoUnitario) {
-        this.precoUnitario = precoUnitario;
+        if (precoUnitario >= 0) {
+            this.precoUnitario = precoUnitario;
+        }
     }
-
 
     public int getQuantidadeEmEstoque() {
         return this.quantidadeEmEstoque;
     }
-
 
     public void setQuantidadeEmEstoque(int quantidadeEmEstoque) {
         if (quantidadeEmEstoque >= 0) {
@@ -50,14 +47,12 @@ public class Produto {
         }
     }
 
-    
     public void adicionarEstoque(int quantidade){
         if (quantidade > 0){
             this.quantidadeEmEstoque += quantidade;
         }
     }
 
-    //remover item de estoque
     public boolean removerEstoque(int quantidade){
         if (quantidade > 0 && this.quantidadeEmEstoque >= quantidade){
             this.quantidadeEmEstoque -= quantidade;
