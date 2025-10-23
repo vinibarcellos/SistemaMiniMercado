@@ -6,7 +6,7 @@ public class ClientePessoaJuridica extends Cliente {
     private String cnpj;
 
     // Construtor
-    public ClientePessoaJuridica(int id, String nome, String telefone, Categoria categoria) {
+    public ClientePessoaJuridica(int id, String nome, String telefone, Categoria categoria, String cnpj) {
         super(id, nome, telefone, categoria);
         this.cnpj = cnpj;
     }
