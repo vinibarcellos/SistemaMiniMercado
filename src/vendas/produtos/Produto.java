@@ -13,8 +13,7 @@ public class Produto {
         this.quantidadeEmEstoque = quantidadeEmEstoque;
     }
 
-    // Getters para que outras classes leiam o valor do atributo privado
-    // Setters para que outras classes alterem o valor do atributo privado
+    // Getters e Setters
     public String getNome() {
         return nome;
     }
@@ -39,22 +38,25 @@ public class Produto {
         this.precoUnitario = precoUnitario;
     }
 
+
     public int getQuantidadeEmEstoque() {
-        if (quantidadeEmEstoque >= 0); //impede que coloque um valor negativo em estoque
         return this.quantidadeEmEstoque;
     }
+
 
     public void setQuantidadeEmEstoque(int quantidadeEmEstoque) {
         if (quantidadeEmEstoque >= 0) {
             this.quantidadeEmEstoque = quantidadeEmEstoque;
         }
     }
-    //adicionar item em estoque
+
+    
     public void adicionarEstoque(int quantidade){
         if (quantidade > 0){
             this.quantidadeEmEstoque += quantidade;
         }
     }
+
     //remover item de estoque
     public boolean removerEstoque(int quantidade){
         if (quantidade > 0 && this.quantidadeEmEstoque >= quantidade){
@@ -63,5 +65,4 @@ public class Produto {
         }
         return false;
     }
-
 }
