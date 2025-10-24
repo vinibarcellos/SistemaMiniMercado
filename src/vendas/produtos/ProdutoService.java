@@ -2,6 +2,14 @@ package vendas.produtos;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * CLASSE DE SERVIÇO (PRODUTOS)
+ *
+ * Responsável pela lógica de negócio e gerenciamento do
+ * repositório de produtos.
+ * (Versão atualizada para 'int id' e 'silenciosa' em
+ * operações bem-sucedidas).
+ */
 public class ProdutoService implements IProdutoService {
 
     private final List<Produto> repositorioDeProdutos;
@@ -16,16 +24,15 @@ public class ProdutoService implements IProdutoService {
 
         if (produtoExistente == null) {
             this.repositorioDeProdutos.add(produto);
-            System.out.println("Produto cadastrado: " + produto.getNome());
+            // Mensagem de sucesso movida para o Main
         } else {
-            System.out.println("Erro: Produto com ID " + produto.getId() + " já existe.");
+            System.out.println("[SERVIÇO PRODUTO] Erro: Produto com ID " + produto.getId() + " já existe.");
         }
     }
 
     @Override
     public Produto buscarProdutoPorId(int id) {
         for (Produto p : this.repositorioDeProdutos) {
-
             if (p.getId() == id) {
                 return p;
             }
@@ -35,18 +42,18 @@ public class ProdutoService implements IProdutoService {
 
     @Override
     public List<Produto> listarTodosProdutos() {
+        // Retorna uma cópia defensiva
         return new ArrayList<>(this.repositorioDeProdutos);
     }
 
     @Override
     public void adicionarEstoque(int id, int quantidade) {
         Produto produto = buscarProdutoPorId(id);
-
         if (produto != null) {
             produto.adicionarEstoque(quantidade);
-            System.out.println("Estoque atualizado: " + produto.getNome() + " | Qtd: " + produto.getQuantidadeEmEstoque());
+            // Mensagem de sucesso movida para o Main
         } else {
-            System.out.println("Erro: Produto com ID " + id + " não encontrado para adicionar estoque.");
+            System.out.println("[SERVIÇO PRODUTO] Erro: Produto com ID " + id + " não encontrado para adicionar estoque.");
         }
     }
 
@@ -57,14 +64,14 @@ public class ProdutoService implements IProdutoService {
             boolean sucesso = produto.removerEstoque(quantidade);
 
             if (sucesso) {
-                System.out.println("Baixa no estoque: " + produto.getNome() + " | Restante: " + produto.getQuantidadeEmEstoque());
-                return true;
+                // Mensagem de sucesso movida para o Main
+                return true; // Apenas reporta o sucesso
             } else {
-                System.out.println("Erro: Estoque insuficiente para " + produto.getNome());
+                System.out.println("[SERVIÇO PRODUTO] Erro: Estoque insuficiente para " + produto.getNome());
                 return false;
             }
         } else {
-            System.out.println("Erro: Produto com ID " + id + " não encontrado para dar baixa.");
+            System.out.println("[SERVIÇO PRODUTO] Erro: Produto com ID " + id + " não encontrado para dar baixa.");
             return false;
         }
     }
