@@ -2,14 +2,6 @@ package vendas.produtos;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * CLASSE DE SERVIÇO (PRODUTOS)
- *
- * Responsável pela lógica de negócio e gerenciamento do
- * repositório de produtos.
- * (Versão atualizada para 'int id' e 'silenciosa' em
- * operações bem-sucedidas).
- */
 public class ProdutoService implements IProdutoService {
 
     private final List<Produto> repositorioDeProdutos;
@@ -24,7 +16,6 @@ public class ProdutoService implements IProdutoService {
 
         if (produtoExistente == null) {
             this.repositorioDeProdutos.add(produto);
-            // Mensagem de sucesso movida para o Main
         } else {
             System.out.println("[SERVIÇO PRODUTO] Erro: Produto com ID " + produto.getId() + " já existe.");
         }
@@ -42,7 +33,6 @@ public class ProdutoService implements IProdutoService {
 
     @Override
     public List<Produto> listarTodosProdutos() {
-        // Retorna uma cópia defensiva
         return new ArrayList<>(this.repositorioDeProdutos);
     }
 
@@ -51,7 +41,6 @@ public class ProdutoService implements IProdutoService {
         Produto produto = buscarProdutoPorId(id);
         if (produto != null) {
             produto.adicionarEstoque(quantidade);
-            // Mensagem de sucesso movida para o Main
         } else {
             System.out.println("[SERVIÇO PRODUTO] Erro: Produto com ID " + id + " não encontrado para adicionar estoque.");
         }
@@ -64,8 +53,8 @@ public class ProdutoService implements IProdutoService {
             boolean sucesso = produto.removerEstoque(quantidade);
 
             if (sucesso) {
-                // Mensagem de sucesso movida para o Main
-                return true; // Apenas reporta o sucesso
+
+                return true;
             } else {
                 System.out.println("[SERVIÇO PRODUTO] Erro: Estoque insuficiente para " + produto.getNome());
                 return false;
