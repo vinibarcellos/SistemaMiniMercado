@@ -3,7 +3,7 @@ package vendas.clientes;
 import java.util.HashMap;
 import java.util.Map;
 
-    // Criamos um Map(array que guarda dados em formato key:value como se fosse o "banco de dados" dos clientes cadastrados.
+// Criamos um Map(array que guarda dados em formato key:value como se fosse o "banco de dados" dos clientes cadastrados.
 
 public class ClienteService implements IClienteService {
     private final Map<Integer, Cliente> clientes;
@@ -16,12 +16,27 @@ public class ClienteService implements IClienteService {
 
     @Override
     public void cadastrarCliente(Cliente cliente) {
+        // Testes de validação (Dados incompletos / inválidos)
+        if (cliente == null) {
+            throw new IllegalArgumentException("Não é possível cadastrar um cliente nulo.");
+        }
+        // Validações de dados (nome, etc) já são feitas no construtor do Cliente.
+
+        if (this.clientes.containsKey(cliente.getId())) {
+            throw new RuntimeException("[SERVIÇO CLIENTE] Erro: Cliente com ID " + cliente.getId() + " já existe.");
+        }
+
         this.clientes.put(cliente.getId(), cliente);
     }
 
     @Override
     public Cliente consultarCliente(int id) {
-        return this.clientes.get(id);
+        Cliente cliente = this.clientes.get(id);
+        if (cliente == null) {
+            // MUDANÇA AQUI: Lança exceção (Teste: Cliente Inexistente)
+            throw new RuntimeException("[SERVIÇO CLIENTE] Erro: Cliente com ID " + id + " não encontrado.");
+        }
+        return cliente;
     }
 
     @Override

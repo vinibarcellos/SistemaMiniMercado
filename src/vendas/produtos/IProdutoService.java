@@ -11,5 +11,5 @@ public interface IProdutoService {
 
     void adicionarEstoque(int id, int quantidade);
 
-    boolean darBaixaEstoque(int id, int quantidade);
+    void darBaixaEstoque(int id, int quantidade); // <-- MUDANÇA AQUI
 }

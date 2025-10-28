@@ -1,6 +1,6 @@
 package vendas.clientes;
 
-    // Inicializamos a Classe Cliente com suas variaveis
+// Inicializamos a Classe Cliente com suas variaveis
 
 public class Cliente {
     private final int id;
@@ -10,6 +10,9 @@ public class Cliente {
 
     // Construtor
     public Cliente(int id, String nome, String telefone, Categoria categoria) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome do cliente não pode ser nulo ou vazio.");
+        }
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -26,6 +29,10 @@ public class Cliente {
     }
 
     public void setNome(String nome) {
+        // MUDANÇA AQUI: Validação (Dados incompletos)
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome do cliente não pode ser nulo ou vazio.");
+        }
         this.nome = nome;
     }
 
@@ -55,4 +62,3 @@ public class Cliente {
                 '}';
     }
 }
-
