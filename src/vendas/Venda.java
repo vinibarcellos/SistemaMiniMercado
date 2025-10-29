@@ -4,6 +4,8 @@ import vendas.clientes.Cliente;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+    // Criamos a classe Venda
+
 public class Venda {
 
     private static int contadorId = 0;

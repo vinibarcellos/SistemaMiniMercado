@@ -7,7 +7,6 @@ public class Produto {
     private int quantidadeEmEstoque;
 
     public Produto(int id, String nome, double precoUnitario, int quantidadeEmEstoque) {
-        // Validação inicial no construtor
         if (nome == null || nome.trim().isEmpty()) {
             throw new IllegalArgumentException("Nome do produto não pode ser nulo ou vazio.");
         }
@@ -47,7 +46,6 @@ public class Produto {
 
     public void setPrecoUnitario(double precoUnitario) {
         if (precoUnitario < 0) {
-            // MUDANÇA AQUI: Lança exceção em vez de falhar silenciosamente
             throw new IllegalArgumentException("Preço unitário não pode ser negativo.");
         }
         this.precoUnitario = precoUnitario;
@@ -57,9 +55,9 @@ public class Produto {
         return this.quantidadeEmEstoque;
     }
 
+    // Tratamento de excecoes
     public void setQuantidadeEmEstoque(int quantidadeEmEstoque) {
         if (quantidadeEmEstoque < 0) {
-            // MUDANÇA AQUI: Lança exceção
             throw new IllegalArgumentException("Quantidade em estoque não pode ser negativa.");
         }
         this.quantidadeEmEstoque = quantidadeEmEstoque;
@@ -67,13 +65,11 @@ public class Produto {
 
     public void adicionarEstoque(int quantidade){
         if (quantidade <= 0){
-            // MUDANÇA AQUI: Lança exceção
             throw new IllegalArgumentException("Quantidade a adicionar ao estoque deve ser positiva.");
         }
         this.quantidadeEmEstoque += quantidade;
     }
 
-    // MUDANÇA AQUI: Retorna void e lança exceção em caso de falha
     public void removerEstoque(int quantidade){
         if (quantidade <= 0) {
             throw new IllegalArgumentException("Quantidade a remover do estoque deve ser positiva.");

@@ -15,31 +15,27 @@ public class Main {
         IClienteService clienteService = new ClienteService();
         IVendasService vendasService = new VendasService();
 
-        System.out.println("Serviços prontos. Executando rotinas...");
-        System.out.println("-----------------------------------------");
-
-        executarRotinasDoGestor(produtoService, clienteService);
+        executarModoGestor(produtoService, clienteService);
 
         System.out.println("-----------------------------------------");
 
-        executarRotinasDeVenda(produtoService, clienteService, vendasService);
+        executarModoVenda(produtoService, clienteService, vendasService);
 
-        // MUDANÇA AQUI: Adicionando a chamada para os novos testes de exceção
         System.out.println("-----------------------------------------");
-        executarTestesDeExcecao(produtoService, clienteService);
-        // FIM DA MUDANÇA
+        executarExcecao(produtoService, clienteService);
 
         System.out.println("\n=========================================");
         System.out.println("   SISTEMA 2 AMIGOS ENCERRADO");
         System.out.println("=========================================");
     }
 
-    private static void executarRotinasDoGestor(IProdutoService produtoService, IClienteService clienteService) {
-        System.out.println("\n--- ACESSANDO PAINEL DE GESTÃO ---");
+    private static void executarModoGestor(IProdutoService produtoService, IClienteService clienteService) {
+        System.out.println("\n--- PAINEL DE GESTÃO ---");
 
         System.out.println("\n[GESTOR] 1. Cadastrando produtos no inventário...");
 
-        // Rotinas de cadastro agora podem falhar, então usamos try/catch
+        // O cadastro pode falhar, então usamos try/catch
+
         try {
             Produto p1 = new Produto(1, "Arroz 5kg", 25.00, 50);
             produtoService.cadastrarProduto(p1);
@@ -60,13 +56,13 @@ public class Main {
             System.out.println("  ERRO INESPERADO no cadastro de produtos: " + e.getMessage());
         }
 
-        System.out.println("\n[GESTOR] 2. Listando inventário (pós-cadastro)...");
+        System.out.println("\n[GESTOR] 2. Listando inventário...");
         for (Produto p : produtoService.listarTodosProdutos()) {
             System.out.printf("  [ID %d] %-15s | R$ %5.2f | Estoque: %d\n",
                     p.getId(), p.getNome(), p.getPrecoUnitario(), p.getQuantidadeEmEstoque());
         }
 
-        System.out.println("\n[GESTOR] 3. Consultando produto ID 3...");
+        System.out.println("\n[GESTOR] 3. Consultando produto por ID...");
         Produto produtoConsultado = null;
         try {
             produtoConsultado = produtoService.buscarProdutoPorId(3);
@@ -75,9 +71,7 @@ public class Main {
             System.out.println("  ERRO INESPERADO ao consultar produto: " + e.getMessage());
         }
 
-
         System.out.println("\n[GESTOR] 4. Editando produtos...");
-        // Rotinas de edição agora podem falhar, então usamos try/catch
         try {
             if (produtoConsultado != null) {
                 System.out.println("  Editando: '" + produtoConsultado.getNome() + "' (ID 3), Novo Preço: R$ 5.50");
@@ -89,18 +83,16 @@ public class Main {
             System.out.println("  ERRO AO EDITAR PRODUTO: " + e.getMessage());
         }
 
-
-        System.out.println("\n[GESTOR] 5. Verificando alterações no ID 3...");
+        System.out.println("\n[GESTOR] 5. Verificando alterações por ID...");
         try {
             Produto produtoEditado = produtoService.buscarProdutoPorId(3);
-            System.out.printf("  OK: '%s', Preço: R$ %.2f, Estoque: %d\n",
+            System.out.printf("  Produto: '%s', Preço: R$ %.2f, Estoque: %d\n",
                     produtoEditado.getNome(), produtoEditado.getPrecoUnitario(), produtoEditado.getQuantidadeEmEstoque());
         } catch (Exception e) {
             System.out.println("  ERRO AO VERIFICAR EDIÇÃO: " + e.getMessage());
         }
 
-
-        System.out.println("\n[GESTOR] 6. Registrando clientes (Fidelidade)...");
+        System.out.println("\n[GESTOR] 6. Registrando clientes...");
         try {
             Cliente c1 = new ClientePessoaFisica(
                     1, "Breno (Cliente Ouro)", "9999-8888", Categoria.CLIENTEOURO, "111.222.333-44"
@@ -123,14 +115,13 @@ public class Main {
             System.out.println("  ERRO INESPERADO no cadastro de clientes: " + e.getMessage());
         }
 
-
-        System.out.println("\n[GESTOR] 7. Listando clientes (pós-cadastro)...");
+        System.out.println("\n[GESTOR] 7. Listando clientes...");
         for (Cliente c : clienteService.listarClientes()) {
             System.out.printf("  [ID %d] %-28s | Categoria: %s\n",
                     c.getId(), c.getNome(), c.getCategoria());
         }
 
-        System.out.println("\n[GESTOR] 8. Consultando cliente ID 1...");
+        System.out.println("\n[GESTOR] 8. Consultando cliente por ID...");
         try {
             Cliente clienteConsultado = clienteService.consultarCliente(1);
             System.out.println("  Consulta: " + clienteConsultado.getNome() + " (Telefone: " + clienteConsultado.getTelefone() + ")");
@@ -138,8 +129,7 @@ public class Main {
             System.out.println("  ERRO AO CONSULTAR CLIENTE: " + e.getMessage());
         }
 
-
-        System.out.println("\n[GESTOR] 9. Editando cliente (Promovendo ID 3)...");
+        System.out.println("\n[GESTOR] 9. Editando cliente...");
         try {
             Cliente clienteParaEditar = clienteService.consultarCliente(3); // Busca a Maria
             System.out.println("  Promovendo: '" + clienteParaEditar.getNome() +
@@ -150,7 +140,6 @@ public class Main {
             System.out.println("  ERRO AO EDITAR CLIENTE: " + e.getMessage());
         }
 
-
         System.out.println("\n[GESTOR] 10. Listando clientes (pós-edição)...");
         for (Cliente c : clienteService.listarClientes()) {
             System.out.printf("  [ID %d] %-28s | Categoria: %s\n",
@@ -160,11 +149,10 @@ public class Main {
         System.out.println("--- PAINEL DE GESTÃO ENCERRADO ---");
     }
 
+    private static void executarModoVenda(IProdutoService produtoService, IClienteService clienteService, IVendasService vendasService) {
+        System.out.println("\n--- ACESSANDO MODO DE VENDA---");
 
-    private static void executarRotinasDeVenda(IProdutoService produtoService, IClienteService clienteService, IVendasService vendasService) {
-        System.out.println("\n--- ACESSANDO MODO PONTO DE VENDA (PDV) ---");
-
-        System.out.println("\n[PDV] Iniciando Venda 1...");
+        System.out.println("\nIniciando Venda 1...");
 
         try {
             Cliente clienteBreno = clienteService.consultarCliente(1);
@@ -174,7 +162,6 @@ public class Main {
             Produto pArroz = produtoService.buscarProdutoPorId(1);
             int qtdArroz = 2;
 
-            // MUDANÇA AQUI: darBaixaEstoque agora está em um try/catch
             try {
                 produtoService.darBaixaEstoque(pArroz.getId(), qtdArroz); // Lança exceção se falhar
                 venda1.adicionarItem(new ItensVenda(pArroz.getId(), pArroz.getNome(), qtdArroz, pArroz.getPrecoUnitario()));
@@ -183,12 +170,10 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("  FALHA AO ADICIONAR ITEM (Arroz): " + e.getMessage());
             }
-            // FIM DA MUDANÇA
 
             Produto pLeite = produtoService.buscarProdutoPorId(3);
             int qtdLeite = 5;
 
-            // MUDANÇA AQUI: darBaixaEstoque agora está em um try/catch
             try {
                 produtoService.darBaixaEstoque(pLeite.getId(), qtdLeite); // Lança exceção se falhar
                 venda1.adicionarItem(new ItensVenda(pLeite.getId(), pLeite.getNome(), qtdLeite, pLeite.getPrecoUnitario()));
@@ -197,9 +182,8 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("  FALHA AO ADICIONAR ITEM (Leite): " + e.getMessage());
             }
-            // FIM DA MUDANÇA
 
-            System.out.println("[PDV] Finalizando Venda #" + venda1.getId() + "...");
+            System.out.println("Finalizando Venda #" + venda1.getId() + "...");
             double subtotalV1 = venda1.getSubTotal();
             double precoFinalV1 = DescontoFidelidade.calcularPrecoFinal(venda1.getCliente(), subtotalV1);
             double descontoV1 = subtotalV1 - precoFinalV1;
@@ -220,8 +204,7 @@ public class Main {
             System.out.println("ERRO CRÍTICO NA VENDA 1: " + e.getMessage());
         }
 
-
-        System.out.println("\n[PDV] Iniciando Venda 2...");
+        System.out.println("\nIniciando Venda 2...");
         try {
             Venda venda2 = new Venda(null);
             System.out.println("Venda #" + venda2.getId() + " aberta. Cliente: (Não informado)");
@@ -229,7 +212,6 @@ public class Main {
             Produto pSabonete = produtoService.buscarProdutoPorId(4);
             int qtdSabonete = 1;
 
-            // MUDANÇA AQUI: darBaixaEstoque agora está em um try/catch
             try {
                 produtoService.darBaixaEstoque(pSabonete.getId(), qtdSabonete); // Lança exceção se falhar
                 venda2.adicionarItem(new ItensVenda(pSabonete.getId(), pSabonete.getNome(), qtdSabonete, pSabonete.getPrecoUnitario()));
@@ -238,9 +220,8 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("  FALHA AO ADICIONAR ITEM (Sabonete): " + e.getMessage());
             }
-            // FIM DA MUDANÇA
 
-            System.out.println("[PDV] Finalizando Venda #" + venda2.getId() + "...");
+            System.out.println("Finalizando Venda #" + venda2.getId() + "...");
             double subtotalV2 = venda2.getSubTotal();
             double precoFinalV2 = DescontoFidelidade.calcularPrecoFinal(venda2.getCliente(), subtotalV2);
             double descontoV2 = subtotalV2 - precoFinalV2;
@@ -260,21 +241,16 @@ public class Main {
             System.out.println("ERRO CRÍTICO NA VENDA 2: " + e.getMessage());
         }
 
-        System.out.println("\n--- MODO PONTO DE VENDA (PDV) ENCERRADO ---");
+        System.out.println("\n--- MODO DE VENDA ENCERRADO ---");
     }
 
-    // ===================================================================
-    // ===================================================================
-    // AQUI COMEÇA A NOVA SEÇÃO DE TESTES DE EXCEÇÃO
-    // ===================================================================
-    // ===================================================================
-    private static void executarTestesDeExcecao(IProdutoService produtoService, IClienteService clienteService) {
+    private static void executarExcecao(IProdutoService produtoService, IClienteService clienteService) {
         System.out.println("\n--- ACESSANDO MODO DE TESTES DE EXCEÇÃO ---");
 
-        // --- TESTES DE PRODUTO ---
+        // TESTES DE PRODUTO
         System.out.println("\n--- Testes de Produto ---");
 
-        // Cadastrar: Dados incompletos (nome vazio)
+        // Cadastrar: Dados incompletos
         System.out.println("\n[TESTE] Cadastrar Produto: Dados incompletos (nome vazio)");
         try {
             Produto p = new Produto(5, "", 10.0, 10);
@@ -284,7 +260,7 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Cadastrar: Dados em tipo inválido (Estoque negativo)
+        // Cadastrar: Dados em tipo inválido
         System.out.println("\n[TESTE] Cadastrar Produto: Estoque negativo");
         try {
             Produto p = new Produto(5, "Produto Teste", 10.0, -10);
@@ -294,7 +270,7 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Cadastrar: Dados em tipo inválido (Preço negativo)
+        // Cadastrar: Dados em tipo inválido
         System.out.println("\n[TESTE] Cadastrar Produto: Preço negativo");
         try {
             Produto p = new Produto(5, "Produto Teste", -10.0, 10);
@@ -313,7 +289,7 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Editar: Dados em tipo inválido (Estoque negativo)
+        // Editar: Dados em tipo inválido
         System.out.println("\n[TESTE] Editar Produto: Estoque negativo");
         try {
             Produto p = produtoService.buscarProdutoPorId(1); // Pega o Arroz
@@ -323,7 +299,7 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Alterar Estoque: Estoque negativo (adicionar negativo)
+        // Alterar Estoque: Estoque negativo
         System.out.println("\n[TESTE] Alterar Estoque: Adicionar quantidade negativa");
         try {
             produtoService.adicionarEstoque(1, -10);
@@ -332,10 +308,10 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // --- TESTES DE CLIENTE ---
+        // TESTES DE CLIENTE
         System.out.println("\n--- Testes de Cliente ---");
 
-        // Cadastrar: Dados incompletos (nome vazio)
+        // Cadastrar: Dados incompletos
         System.out.println("\n[TESTE] Cadastrar Cliente: Dados incompletos (nome vazio)");
         try {
             Cliente c = new Cliente(4, "", "1234-5678", Categoria.CLIENTECOMUM);
@@ -354,7 +330,7 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Editar: Dados incompletos (nome vazio)
+        // Editar: Dados incompletos
         System.out.println("\n[TESTE] Editar Cliente: Nome vazio");
         try {
             Cliente c = clienteService.consultarCliente(1); // Pega o Breno
@@ -364,20 +340,20 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // --- TESTES DE VENDA (via Serviço de Produto) ---
+        // TESTES DE VENDA
         System.out.println("\n--- Testes de Venda ---");
 
         // Venda: Quantidade superior ao estoque
         System.out.println("\n[TESTE] Venda: Quantidade superior ao estoque");
         try {
-            // Arroz (ID 1) tem 48 em estoque (50 - 2 da Venda 1)
+            // Arroz (ID 1) tem 48 em estoque
             produtoService.darBaixaEstoque(1, 1000); // Tenta comprar 1000
             System.out.println("  FALHA: Sistema permitiu baixa de estoque superior ao disponível.");
         } catch (Exception e) {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Venda: Quantidade zerada ou negativa
+        // Venda: Quantidade zerada
         System.out.println("\n[TESTE] Venda: Quantidade zerada");
         try {
             produtoService.darBaixaEstoque(1, 0);
@@ -394,7 +370,7 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        // Venda: Produto inexistente (Já coberto pelo teste de Produto)
+        // Venda: Produto inexistente
         System.out.println("\n[TESTE] Venda: Produto inexistente (ID 999)");
         try {
             produtoService.darBaixaEstoque(999, 1);
@@ -403,6 +379,6 @@ public class Main {
             System.out.println("  SUCESSO: Exceção capturada. Mensagem: " + e.getMessage());
         }
 
-        System.out.println("\n--- TESTES DE EXCEÇÃO ENCERRADOS ---");
+        System.out.println("\n--- TESTE DE EXCEÇÃO ENCERRADO ---");
     }
 }

@@ -1,5 +1,6 @@
 package vendas;
 
+    // Iniciamos as variaveis, construtor e getter/setters
 public class ItensVenda {
     private final int id;
     private String nome;

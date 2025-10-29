@@ -1,6 +1,7 @@
 package vendas.produtos;
 import java.util.List;
 
+    // Criamos a interface como "mock-up" para a implementacao
 public interface IProdutoService {
 
     void cadastrarProduto(Produto produto);

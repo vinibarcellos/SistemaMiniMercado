@@ -1,7 +1,6 @@
 package vendas.clientes;
 
-// Inicializamos a Classe Cliente com suas variaveis
-
+    // Inicializamos a Classe Cliente com suas variaveis
 public class Cliente {
     private final int id;
     private String nome;
